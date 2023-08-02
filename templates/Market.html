@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <head>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+    </head>
+    <body>
+        <header>
+            <h1 style="font-family:Verdana; margin: 0 auto;"><a href="{{ url_for('home') }}">SlugStocks</a></h1>
+            
+            <div style="float: right; vertical-align: bottom;">
+                <a href="{{ url_for('Profile') }}">
+                    <img src="{{ avatars.robohash(current_user.username, size='70') }}">
+                </a>
+            </div>
+        </header>
+        
+        <div class="topnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('Positions') }}">Positions</a>
+            <a class="active" href="">Market</a>
+            <a href="{{ url_for('Favorites') }}">Favorites</a>
+            <a href="{{ url_for('About') }}">About</a>
+            <a href="{{ url_for('Profile') }}">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+
+        <h2>Welcome to the Market</h2>
+        <!--Create a search bar to display stock searches-->
+        <form action="/Market" method="post">
+            <input type="text" name="search" placeholder="Ticker Quick Lookup">
+            <input type="submit" value="Search">
+        </form>
+        {% for message in get_flashed_messages() %}
+        <p style="color: red;">Error : {{ message }}</p>
+        {% endfor %}
+        <!--If the user has searched for a stock, display the stock data-->
+        {% if ticker_dict %}
+            <h2>Stock Data</h2>
+            <!--Display the stock data in a formatted table-->
+            <table class = "StockList" style="width:100%" border="1" cellpadding="5" cellspacing="5" align="center">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>Amount Change ($)</th>
+                    <th>Percent Change</th>
+                    <th>Buy Stock</th>
+                </tr>
+                <tr>
+                    <td>{{ ticker_dict['symbol'] }}</td>
+                    <td>{{ ticker_dict['price'] }}</td>
+                    <td>{{ ticker_dict['change'] }}</td>
+                    <td>{{ ticker_dict['change percent'] }}</td>
+                    <td><button class="open-button2" onclick="openForm()" >Buy</button></td>
+                </tr>
+            </table>
+            <!--Show data in a graph-->
+            {% if TDdata != None %}
+            <div class="chart">
+                <canvas id="chart" ></canvas>
+                <script type="text/javascript">
+                    var user_access_token = {{ user_access_token | tojson }}
+                    var symbol = {{ ticker_dict['symbol'] | tojson }}
+                </script>
+                
+                <script src="https://cdn.jsdelivr.net/npm/luxon@1.26.0"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.1/dist/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+                <script src="../static/chartjs-financial.js" type="text/javascript"></script>
+                <script type="text/javascript" src="../static/candle_chart.js"></script>
+            </div>
+            {% endif %}
+            <h2> News</h2>
+            <!--Display the news data in a formatted table-->
+            {% if feed %}
+                
+                <section class="news">
+                {% for news in feed %}
+                    <article class="post clickable" href = "{{news["url"]}}">
+                        <div class="media" style="background-image: url('{{news["banner_image"]}}');"></div>
+                        <div class="caption">
+                            <h1 class="title">{{news["title"]}}</h1>
+                            <div class="author">by {{news["source"]}}</div>
+                        </div>
+                    </article>
+                     {% endfor %} 
+                </section>
+
+                <script>
+                    $(document).ready(function() {
+                    
+                        var large = 1200,
+                                medium  = 900,
+                                small   = 600,
+                                highlighted  = 'overlaid';
+                    
+                        function changeNewsArticleClass() {
+                            var width = $(window).outerWidth();
+                            console.log("running Fcuntion");
+                            
+                            $('.news .post').removeClass(highlighted);
+                            
+                            if (width > large) {
+                                $('.news .post:nth-child(1), .news .post:nth-child(4), .news .post:nth-child(6)').addClass(highlighted);
+                            }
+                            else if (width > medium && width <= large) {
+                                $('.news .post:nth-child(1), .news .post:nth-child(5)').addClass(highlighted);
+                            }
+                            else if (width > small && width <= medium) {
+                                $('.news .post:nth-child(1), .news .post:nth-child(4)').addClass(highlighted);
+                            }
+                            else if (width <= small) {
+                                $('.news .post').addClass(highlighted);
+                            }
+                        }
+                    
+                        changeNewsArticleClass();
+                    
+                        $(window).on('load resize', function() {
+                            changeNewsArticleClass();
+                        });
+                    
+                    });
+                </script>
+                    <script>            
+                        var colors = ['#ff0000', '#00ff00', '#0000ff'];
+                        pics = document.getElementsByClassName('media');
+                        for (var i = 0; i < pics.length; i++) { 
+                            pics[i].style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                            console.log(colors[Math.floor(Math.random() * colors.length)])
+                            }
+           
+                        elements = document.getElementsByClassName('clickable');
+                        
+                        for (var i = 0; i < elements.length; i++) { 
+                        
+                        
+                        console.log(elements[i]); 
+                        elements[i].addEventListener("click",cl_Div,false);
+              }
+                        
+                        
+                        function cl_Div(href) {
+                        
+                            console.log(href.currentTarget.getAttribute("href")); 
+                            window.location.href = href.currentTarget.getAttribute("href");
+                        } </script>
+            {% else %}
+                <p>No news found for {{ ticker_dict['symbol'] }}</p>
+            {% endif %}
+                
+        {% endif %}
+
+        <div class="form-popup" id="myForm">
+            <form action="/order/{{ticker_dict['symbol']}}",method="POST" class="form-container">
+              <h1>Buy {{ ticker_dict['symbol'] }}</h1>
+          
+              <label for="Quanitiy"><b>Quanitiy</b></label>
+              <input type="number" placeholder="0" name="Quanitiy" required>
+              <h3>Current Price: {{Price}}</h3>   
+                <h3>Money Left to invest: {{Balance}} </h3>   
+          
+              <button type="submit" class="btn">Buy</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+    </body>
+    <script>
+        function openForm() {
+        document.getElementById("myForm").style.display = "block";
+      }
+      
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+    </script>
+</html>

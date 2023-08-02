@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+        
+    </head>
+    <body>
+        <header>
+            <h1 style="font-family:Verdana; margin: 0 auto;"><a href="{{ url_for('home') }}">SlugStocks</a></h1>
+            
+            <div style="float: right; vertical-align: bottom;">
+                <a href="{{ url_for('Profile') }}">
+                    <img src="{{ avatars.robohash(current_user.username, size='70') }}">
+                </a>
+            </div>
+        </header>
+        
+        <div class="topnav">
+            <a class="active" href="">Home</a>
+            <a href="{{ url_for('Positions') }}">Positions</a>
+            <a href="{{ url_for('Market') }}">Market</a>
+            <a href="{{ url_for('Favorites') }}">Favorites</a>
+            <a href="{{ url_for('About') }}">About</a>
+            <a href="{{ url_for('Profile') }}">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+          </div>
+
+          <h2>Hello {{ current_user.username }}! Welcome to SlugStocks!</h2>
+          <br>
+          <button class = "chart_button" onclick="update_graph_to_option('a')">1 Day</button>
+          <button class = "chart_button" onclick="update_graph_to_option('b')">1 Week</button>
+          <button class = "chart_button" onclick="update_graph_to_option('c')">1 Month</button>
+          <button class = "chart_button" onclick="update_graph_to_option('d')">3 Months</button>
+          <button class = "chart_button" onclick="update_graph_to_option('e')">1 Year</button>
+          <button class = "chart_button" onclick="update_graph_to_option('f')">5 Years</button>
+          <button class = "chart_button" onclick="display_data_labels()">Data Lebels</button>
+          <div class="user_live_chart">
+            <canvas id="user_live_chart" ></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/danfojs@1.1.2/lib/bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js" integrity="sha512-Tfw6etYMUhL4RTki37niav99C6OHwMDB2iBT5S5piyHO+ltK2YX8Hjy9TXxhE1Gm/TmAV0uaykSpnHKFIAif/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script type="text/javascript">
+                var user_access_token = {{ user_access_token | tojson }}
+                var asset_name = {{ asset_name | tojson }}
+                var quantity = {{ quantity | tojson }}
+                var init_val = {{ init_values | tojson }}
+                var init_time = {{ init_times | tojson }}
+                var iv = {{ initial_investment | tojson }}
+                var init_color = {{ init_color | tojson }}
+            </script>
+            <script type="text/javascript" src="../static/home_graph.js"></script>
+            <!-- <script> update_graph_to_option('a'); </script>   -->
+        </div>
+        <div class="User_positions_pie_chart">
+            <canvas id="my_pie_chart" width="500" height="500" ></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+            <script type="text/javascript">
+                var asset_name = {{ asset_name | tojson }}
+                var percentage_of_assets = {{ percentage_of_assets | tojson }}
+                var avg_price = {{ avg_price | tojson }}
+                var current_price = {{ current_price | tojson }}
+            </script>
+            <script type="text/javascript" src="../static/user_pie_chart.js"></script>
+        </div>
+    </body>
+</html>

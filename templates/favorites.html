@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+    </head>
+    <body>
+        <h1 style="font-family:Verdana"><center>SlugStocks</center></h1>
+        <div class="topnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('Positions') }}">Positions</a>
+            <a href="{{ url_for('Market') }}">Market</a>
+            <a class="active" href="">Favorites</a>
+            <a href="{{ url_for('About') }}">About</a>
+            <a href="{{ url_for('Profile') }}">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+          </div>
+
+          <h2>Welcome to the Favorites Page!</h2>
+          
+        <!--Create a search bar to display stock searches-->
+        <form action="/Favorites" method="post">
+            <input type="text" name="search" placeholder="Add Symbol">
+            <input type="submit" value="Add">
+        </form>
+        
+        {% for message in get_flashed_messages() %}
+        <p style="color: red;">Error : {{ message }}</p>
+        {% endfor %}
+
+        <h2>Favorite List</h2>
+
+        <table style="width:100%" border="1" cellpadding="5" cellspacing="5" align="center">
+            <tr>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>Amount Change ($)</th>
+                <th>Percent Change</th>
+            </tr>
+
+            <!--If the user has searched for a stock, display the stock data-->
+            
+            {% for ticker_dict in all_ticker_dicts %}
+                <tr>
+                {% if ticker_dict %}    
+                <!--Display the stock data in a formatted table-->
+                        <td>{{ ticker_dict['symbol'] }}</td>
+                        <td>{{ ticker_dict['price'] }}</td>
+                        <td>{{ ticker_dict['change'] }}</td>
+                        <td>{{ ticker_dict['change percent'] }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </body>
+</html>

@@ -1,0 +1,101 @@
+SlugStocks, Nov 29th 2022
+
+Sprint 1
+
+As a Platform user, I want an account I can log into so that I can see my personal performance on the app
+
+Scenario:
+    1 Start SlugStocks App and Navagate to home
+    2 After Being Redirected to Login Click "Create a New account"
+    3 type: 
+    • username = <Test1>
+    • email = <Test1@gmail.com>
+    • password = <123>
+    • password confirmation = <123>
+    • press Enter Key
+
+    4 Should Be Redirected to Login Page
+    type:
+    email : <Test1@gmail.com>
+    password: <123>
+    press Enter Key
+
+    Redirected to Profile Page Saying:
+    Test1's Profile Page
+
+Sprint 2
+Implemented User Stories
+
+As a User I need to be able to add funds/connect account so that stocks can be traded
+As a User I want to be able to buy and sell stocks so that the platform has a use.
+As a user I want a portfolio with statistics on how my investments are going so that users can track their success 
+
+Scenario:
+    1 Create Account As Described in Sprint 1's Scenario and Login
+    2 On the Profile Page Click "Connect Account" which will redirect you to TDAmeritrade.com where you
+        can login and authorize SlugStocks to have access to trade and get trading history from your account
+    3 After Accepting you will be brought back to your profile page where now inplace of the "Connect Account" button
+        new text should say "Account Connected"
+    4 Then Navagate to the market page and serach "aprn", press enter. You can then click the "Buy" button on the page which will 
+        bring up a popup showing how much money you have left to invest, how much it currently costs,
+        and a box asking for the quantity you wish to buy, input 1 and click buy
+    5 If during market hours the order should go through, if not during market hours wait until market hours (9:30-4 est)
+    6 Once the orders go through, Navagate to the positions page where the stock you bought, its total value,
+        its price changes, and quantity should show up.
+    7 Click Sell on the stock, a popup will show up, and select 1 as the quantity and click sell
+    8 if not during market hours wait, if during market hours wait for the order to go through. Once the order is through refresh the page
+        and your stock should no longer be listed in positions.
+
+Sprint 3
+
+As a user I want to be able to have friends and connect with friends on the platform
+As a user I want to see articles/news on the stocks I’m trading so that I can stay in the know about the most important news 
+    surrounding my investments
+As a user I want a graph on how my investments are going so that I can track my success 
+
+1 Create Account with the username LeetCoder and another Account Named StockMaster
+2 Login to StockMaster and navagate using to top navigation bar to Friends. Type in LeetCoder and Press enter. You should see LeetCoder in 
+    Pending Requests
+3 Logout and login to LeetCoder and Navagate to Friends and there should be an friend request under "added me" Press Accept.
+4 StockMaster should show up under Friends with the current date.
+5. Logout and the login to LeetCoder and navagate to friends to see StockMaster under friends with the same date.
+6. Click x on the bottom right of the Friends StockMaster Card. They should then be removed as a friend and no longer show up.
+7 Navagate to market and serach TSLA and press enter.
+8 Listed News with links should appear under the price of the stock.
+9 Connect account as Described in above Scenario and navagate to home page where a graph should show investments overtime
+    
+Sprint 4
+
+As a Platform user, I want to be able to create a list of my favorite stocks 
+
+Scenario:
+    1. Start SlugStocks App and Navagate to Favorites (Make Sure User Already Has Account)
+    2. Once On Favorites Tab:
+        a. Enter Valid Stock into Space Provided
+        b. Click "Add"
+            i. If Stock Does Not Exist or Stock Already in List, Returns Page without Modification
+            ii. If Stock Exists and is not in List, Returns Page with Updated Stock List
+
+User Stories 2
+
+As a user I want to see my investments over different time ranges so that I can see my success over time
+As a less experienced user I want to be able to set my own personal rules to trading stocks (selling/buying 
+    when heading above or below a threshold) so that I can be more successful on the trading platform
+As a user I want to be able to see and manage my active orders so that I can be in control of my investments
+As a user I want to see relevant news on the stocks I own
+
+Scenario:
+    1. Create, Login, and connect account as Described in above Scenarios
+    2. Navagate to the home page where a graph of your investments total value over time should be shown. 
+    3. Click though the range options (1 day, 1 week, 1 month, etc) and see the graph time frame shift 
+        and change to the chosen option.
+    4. Navagate to the market page, search bynd, press enter. The stock, its price and a buy button should show up, click it
+    5. A popup should show up, set the quantity to 1 and click buy
+    6. Navagate to the positions page where your order should show up under orders. Wait for order to be filled
+    7. Once it goes thourgh refresh the page and it should show up under positions. News on BYND Should show up below
+        Click the AutoSell Button next to bynd
+    8. Set the Minimum to be higher than the current price and set the Maximum to anything, set the quantity to 1 and click "set"
+    9. Wait 30 seconds and refresh the page, a Sell order for bynd should show up under orders.
+    10. Click the X next to the order and click the "cancel" button in the bottom right and the order should be canceled and removed
+
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+    </head>
+    <body>
+        <header>
+            <h1 style="font-family:Verdana; margin: 0 auto;"><a href="{{ url_for('home') }}">SlugStocks</a></h1>
+            
+            <div style="float: right; vertical-align: bottom;">
+                <a href="{{ url_for('Profile') }}">
+                    <img src="{{ avatars.robohash(current_user.username, size='70') }}">
+                </a>
+            </div>
+        </header>
+        
+        <div class="topnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('Positions') }}">Positions</a>
+            <a href="{{ url_for('Market') }}">Market</a>
+            <a href="{{ url_for('Favorites') }}">Favorites</a>
+            <a href="{{ url_for('About') }}">About</a>
+            <a class="active" href="">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+        {%if current_user.is_anonymous %}
+        <h2>Hello this is the Profile page</h2>
+        {% else %}
+        <h2>{{ current_user.username }}'s Profile page</h2>
+        <img src="{{ avatars.robohash(current_user.username) }}">
+        <h3>{{NumFriends}} Friends</h3>
+        {%endif %}
+        {% if not accountConnected %}
+        <a href = "https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2FProfile&client_id=ITO7WGSBTYFIW6BQSVDZYFUYH3ECVGET%40AMER.OAUTHAP">Connect Account</a>
+        {% else %}
+        <h3>Account Connected</h3>
+        {% endif %}
+
+        {% block content %}
+            <hr>
+            {% if current_user.about_me %}<h3>About me:</h3><p>{{ current_user.about_me }} </p> {% endif %}
+            {% if current_user.favorite_stocks %}<h3>Favorite stocks:</h3><p>{{ current_user.favorite_stocks }} </p> {% endif %}
+        {% endblock %}
+
+        <a href=" {{ url_for('Profile_Editor') }}">Edit profile here</a>
+    </body>
+</html>

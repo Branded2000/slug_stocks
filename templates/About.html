@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+    </head>
+    <body>
+        <header>
+            <h1 style="font-family:Verdana; margin: 0 auto;"><a href="{{ url_for('home') }}">SlugStocks</a></h1>
+            
+            <div style="float: right; vertical-align: bottom;">
+                <a href="{{ url_for('Profile') }}">
+                    <img src="{{ avatars.robohash(current_user.username, size='70') }}">
+                </a>
+            </div>
+        </header>
+        <div class="topnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('Positions') }}">Positions</a>
+            <a href="{{ url_for('Market') }}">Market</a>
+            <a href="{{ url_for('Favorites') }}">Favorites</a>
+            <a class="active" href="">About</a>
+            <a href="{{ url_for('Profile') }}">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+          </div>
+
+          <h2>Hello this is the About page</h2>
+          <h3>SlugStocks was founded by Cole Marquard and was worked on by him and his group during its development in our 115a software development class</h3>
+    </body>
+</html>

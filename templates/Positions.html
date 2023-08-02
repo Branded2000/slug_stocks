@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Welcome to SlugStocks!</title>
+        <link rel="stylesheet" href="../static/navbar.css">
+        <link rel="stylesheet" href="../static/main.css">
+    </head>
+    <body>
+      <header>
+        <h1 style="font-family:Verdana; margin: 0 auto;"><a href="{{ url_for('home') }}">SlugStocks</a></h1>
+        
+        <div style="float: right; vertical-align: bottom;">
+            <a href="{{ url_for('Profile') }}">
+                <img src="{{ avatars.robohash(current_user.username, size='70') }}">
+            </a>
+        </div>
+      </header>
+
+        <div class="topnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a class="active" href="">Positions</a>
+            <a href="{{ url_for('Market') }}">Market</a>
+            <a href="{{ url_for('Favorites') }}">Favorites</a>
+            <a href="{{ url_for('About') }}">About</a>
+            <a href="{{ url_for('Profile') }}">Profile</a>
+            <a href="{{ url_for('friends') }}">Friends</a>
+            <a style="float:right" href="{{ url_for('logout') }}">Logout</a>
+          </div>
+          {% for message in get_flashed_messages() %}
+          <p style="color: red;">Error : {{ message }}</p>
+          {% endfor %}
+          <h2>Positions</h2>
+          {%if accountConnected %}
+          <script>console.log( {{0}} );</script>
+          <table class ="StockList" style="width:100%" border="1" cellpadding="5" cellspacing="5" align="center">
+            <tr>
+                <th>Symbol</th>
+                <th>Total Value</th>
+                <th>Price</th>
+                <th>Amount Change ($)</th>
+                <th>Percent Change</th>
+                <th>Quanitiy</th>
+                <th>Sell</th>
+                <th>AutoSell</th>
+            </tr>
+            {% for P in Positions%}
+            <tr>
+                <td>{{ P['instrument']['symbol'] }}</td>
+                <td>{{ P['marketValue'] }}</td>
+                <td>{{ P['marketValue']/P['longQuantity'] }}</td>
+                <td>{{ P['currentDayProfitLoss']/P['longQuantity'] }}</td>
+                <td>{{ P['currentDayProfitLossPercentage'] }}</td>
+                <td>{{ P['longQuantity'] }}</td>
+                <td><button class="open-button2" onclick="openForm( Stock =  '{{P['instrument']['symbol']}}' ,Price = {{ P['marketValue']/P['longQuantity'] }})" >Sell</button></td>
+                <td><button class="open-button2" onclick="openFormThresh( Stock =  '{{P['instrument']['symbol']}}')" >Auto</button></td>
+
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Orders</h2>
+        {%if Orders != [] %}
+        <div class="flex-container">
+        {% for O in Orders%}
+        <div class="item-container">
+          <div class = "item" >{{O[2]}}</div>
+          <div class = "Inst" >{{O[3]}}</div>
+          <div class = "time">{{O[6]}}</div>
+          <div class = "filled" title="Filled Quantity" >{{O[4]}}</div>
+          <div class = "totalQ" title="Order Quanitiy">{{O[5]}}</div>
+          <button class = "Cancel" onclick="openFormCancel( OrderId =  '{{O[1]}}' ,accountId = {{O[0]}})" >X</button>
+        </div>
+     
+        {% endfor %}
+      </div>
+        {%endif%}
+       <h2> News</h2> 
+        <!--Display the news data in a formatted table-->
+        {% if feed %}
+        
+        <section class="news">
+      {% for news in feed %}
+            <article class="post clickable" href = "{{news["url"]}}">
+                <div class="media" style="background-image: url('{{news["banner_image"]}}');"></div>
+                <div class="caption">
+                    <h1 class="title">{{news["title"]}}</h1>
+                    <div class="author">by {{news["source"]}}</div>
+                </div>
+            </article>
+             {% endfor %} 
+        </section>
+
+        <script>
+            $(document).ready(function() {
+            
+                var large = 1200,
+                        medium  = 900,
+                        small   = 600,
+                        highlighted  = 'overlaid';
+            
+                function changeNewsArticleClass() {
+                    var width = $(window).outerWidth();
+                    console.log("running Fcuntion");
+                    
+                    $('.news .post').removeClass(highlighted);
+                    
+                    if (width > large) {
+                        $('.news .post:nth-child(1), .news .post:nth-child(4), .news .post:nth-child(6)').addClass(highlighted);
+                    }
+                    else if (width > medium && width <= large) {
+                        $('.news .post:nth-child(1), .news .post:nth-child(5)').addClass(highlighted);
+                    }
+                    else if (width > small && width <= medium) {
+                        $('.news .post:nth-child(1), .news .post:nth-child(4)').addClass(highlighted);
+                    }
+                    else if (width <= small) {
+                        $('.news .post').addClass(highlighted);
+                    }
+                }
+            
+                changeNewsArticleClass();
+            
+                $(window).on('load resize', function() {
+                    changeNewsArticleClass();
+                });
+            
+            });
+        </script>
+            <script>            
+                var colors = ['#ff0000', '#00ff00', '#0000ff'];
+                pics = document.getElementsByClassName('media');
+                for (var i = 0; i < pics.length; i++) { 
+                    pics[i].style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    console.log(colors[Math.floor(Math.random() * colors.length)])
+                    }
+   
+                elements = document.getElementsByClassName('clickable');
+                
+                for (var i = 0; i < elements.length; i++) { 
+                
+                
+                console.log(elements[i]); 
+                elements[i].addEventListener("click",cl_Div,false);
+      }
+                
+                
+                function cl_Div(href) {
+                
+                    console.log(href.currentTarget.getAttribute("href")); 
+                    window.location.href = href.currentTarget.getAttribute("href");
+                } </script>
+        {%endif%}
+
+        {%else%}
+        <h3>Please Connect Your Account Using the Profile Page</h3>
+        {%endif%}
+        <div class="form-popup" id="myForm">
+            <form action="/sell" id = "Formaction" ,method="POST" class="form-container">
+              <h1 id = "sellStockTitle">Sell Stock</h1>
+          
+              <label for="Quanitiy"><b>Quanitiy</b></label>
+              <input type="number" placeholder="0" name="Quanitiy" required>
+              <h3 id = "currentPrice">Current Price: 10</h3>   
+          
+              <button type="submit" class="btn">Sell</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+
+          <div class="form-cancel" id="myCancelForm">
+            <form action="/cancel" id = "Formaction2" ,method="POST" class="Cancel-Container">
+              <h1 id = "sellStockTitle">Cancel Order?</h1>
+              <button type="submit" class="btn">Cancel</button>
+              <button type="button" class="btn cancel" onclick="closeCancelForm()">x</button>
+            </form>
+          </div>
+
+
+          <div class="Thresh-Form" id="ThreshForm">
+            <form action="/threshhold" id = "Formaction3" ,method="POST" class="form-container">
+              <h1 id = "ThreshTitle">Set Selling Threshholds: </h1>
+              <label class = "thresh" for="Quanitiy"><b>Quanitiy  </b><input type="number" placeholder="0" name="Quanitiy" required></label>
+              
+              <label class = "thresh" for="Top"><b>Maximum  </b><input type="number" step="0.01" placeholder="0" name="Top" required></label>
+              
+              <label class = "thresh" for="Bot"><b>Minimum  </b><input type="number" step="0.01" placeholder="0" name="Bot" required></label>
+              
+              <button type="submit" class="btn">Set</button>
+              <button type="button" class="btn cancel" onclick="closeThreshForm()">x</button>
+            </form>
+          </div>
+
+
+    </body>
+    <script>
+        function openForm(Stock,Price ) {
+        console.log(Stock)
+        console.log(Price)
+        document.getElementById("myForm").style.display = "block";
+        document.getElementById("sellStockTitle").innerHTML ="Sell " + Stock
+        document.getElementById("currentPrice").innerHTML = "Current Price: " + Price
+        document.getElementById("Formaction").action = "/sell/" + Stock
+        console.log(document.getElementById("Formaction").action)
+
+      }
+      function openFormCancel(OrderId,accountId ) {
+        document.getElementById("myCancelForm").style.display = "block";
+        document.getElementById("Formaction2").action = "/cancel/" + accountId+ "/"+OrderId 
+        console.log(OrderId)
+        console.log(accountId)
+      }
+
+      function openFormThresh(Stock){
+        document.getElementById("ThreshForm").style.display = "block";
+        document.getElementById("ThreshTitle").innerHTML ="Set Selling Threshholds: " + Stock
+        document.getElementById("Formaction3").action  =  "/threshhold/" + Stock
+      }
+
+
+      function closeThreshForm()
+      {
+
+        document.getElementById("ThreshForm").style.display = "none";
+      }
+      function closeCancelForm()
+      {
+
+        document.getElementById("myCancelForm").style.display = "none";
+      }
+
+
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+
+    </script>
+</html>

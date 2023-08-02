@@ -1,0 +1,156 @@
+Cole Marquard
+Testing Searching for Stocks
+    Tested Searching Many Stocks Back to Back
+    Tested Searching for Stocks That Exist
+    Tested Searching for Stocks that Do Not Exist
+    Tested Seraching for Stocks that have News
+    Tested Searching for Stocks that Do Not have News
+    Tested Searching with Empty Serach box
+    Tested Seraching for deleted bankrupted stocks
+    Also Tested every page as extensivly as I could
+Equivalence Classes
+    Exists - Can Be found on the Stock Market (AAPL, TSLA, etc)
+    Doesnt Exist - Cannot Be Found on the Stock Market (1523,asldkfg, 123sda)
+    No Entry - {}
+    Has News - News Api Returns News
+    Does not have News- News Api Does not return news
+        GME Used to Test Exists but no news (at the time of testing)
+        Tsla used to test Exists and has news
+        qwerty,1245 used to test DNE
+        empty search box used to test empty seraches
+        q, p for deleted bankrupt stocks
+        
+Nikita Manoj
+Testing Adding Stocks to User's Favorite Stocks List
+    Tested Adding Multiple Different Valid Stocks to List
+    Tested Adding Empty String
+    Tested Adding Stocks That Do Not Exist
+    Tested to Make Sure No Duplicates Could Be Added to List
+    Tested to Make Sure Each User Has Unique Stocks List (Created Multiple User Profiles to Test)
+Equivalance Classes
+    Adding Stock Which Does Not Exist: 
+        Returns Page without Modifications 
+    Adding Single Stock Which Does Exist: 
+        If not Already in List: 
+            Adds Stock to List and Returns Updated List
+        If Already in List: 
+            Returns Page without Adding Duplicate Stock
+    No Entry:
+        Returns Page without Modifications
+   
+Brandon Fuentes
+Testing Displaying User Stock Data on Graps
+    Tested using different stocks (Making calls to API with fixed stocks)
+    Tested using no stocks
+    Tested when user has positions on stocks
+    Tested when user has no positions on stocks
+    Tested when user TD ameritrade account is not connected
+    Tested when user TD ameritrade account is connected
+    Tested for different data lengths of multiple stocks (not all stocks return the same lengths of data)
+Equivalence Classes
+    User positions:
+        If a user has positions on stocks:
+            The graphs displayed investmen performance in home Page 
+        If a user has no positions on stocks:
+            The graphs do not display any data
+    User TD accoutn not connected, then cannot make call to get user's stock data so user cannot access home page
+    User TD account is connected, then call to API return stock data to display in graphs
+        User can view their performance on different date ranges (1 day, 1 week, 1 month, etc.)
+
+Danny Tran
+Testing Profile Editor 
+    Tested about_me and favorite stocks field
+    Tested saving changes to Profile
+Equivalence Classes
+    Displaying about_me and favorite stocks on the profile page
+        If about_me or favorite stocks is empty:
+            then don't display anything
+        Else include the About me header and/or the favorites header along with the corresponding text
+
+        If a user leaves the profile editor page without saving:
+            Do not apply any changes that may have been made
+
+Testing title and profile
+    Tested title and profile
+Equivalence Classes
+    Title and Profile:
+        If the user makes the screen smaller / larger
+            then the title should stay centered and the profile icon should stay on the right
+
+Sion Daniel
+Testing Login and Create Account
+    Tested Login with valid credentials
+    Tested Login with invalid credentials
+    Tested Login with empty credentials
+    Tested Create Account with valid credentials
+    Tested Create Account with invalid credentials
+    Tested Create Account with empty credentials
+Equivalance Classes
+    Login:
+        If the user enters valid credentials:
+            then the user should be able to login and be redirected to the home page
+        If the user enters invalid or empty credentials:
+            then the user should not be able to login and be redirected to the login page with an error message
+    Create Account:
+        If the user enters valid credentials:
+            then the user should be able to create an account and be redirected to the home page
+        If the user enters invalid credentials or empty credentials:
+            then the user should not be able to create an account and be redirected to the create account page with an error message
+
+Testing Logout
+    Tested Logout from positions page
+    Tested Logout from market page
+    Tested Logout from about page
+    Tested Logout from home/profile page
+    Tested Logout from friends page
+Equivalance Classes
+    Logout:
+        If the user clicks the logout button:
+            then the user should be redirected to the login page
+
+Testing Friends
+    Testing adding a blank friend
+    Tested adding a friend that is not in the database
+    Tested adding a friend that is in the database
+    Tested adding a friend that is already a friend
+    Testing adding self as a friend
+    Testing adding a friend that is already a friend
+    Testing adding a friend that has sent a pending request
+    Testing adding a friend that has received a pending request
+    Testing accepting a friend request
+    Testing declining a friend request
+Equivalance Classes
+    Adding a friend:
+        If the user enters a blank or username that is not in the database:
+            then the user should not be able to add a friend 
+                and be redirected to the friends page with an error message:
+                "User Does Not Exist"
+        If the user enters a username that is in the database:
+            then the user should be able to add the friend, 
+                be redirected to the friends page 
+                and adds the friend to the pending requests list
+        If the user enters a username that is already a friend:
+            then the user should not be able to add the friend 
+                and be redirected to the friends page with an error message:
+                "User is already a friend"
+        If the user enters their own username:
+            then the user should not be able to add the friend 
+                and be redirected to the friends page with an error message:
+                "You cannot add yourself" 
+        If the user enters a username that has sent or received a pending request:
+            then the user should be able to add the friend 
+                and be redirected to the friends page with an error message:
+                "User Already Has Been Sent a Request or Is Already Added"
+    Accepting a friend request:
+        If the user clicks the accept button:
+            then the user should be able to accept the friend request, 
+                be redirected to the friends page, 
+                adds the friend to the friends list,
+                removes the friend from the pending requests list, 
+                and adds the user to the friend's friends list
+    Declining a friend request:
+        If the user clicks the decline button:
+            then the user should be able to decline the friend request, 
+                be redirected to the friends page, 
+                and removes the friend from the pending requests list
+        
